@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zong.web.dao.ProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.zong.web.bean.Project" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,
+    name,
+    remark,
+    create_time
+  </sql>
+  
+  <!-- 根据对象主键查询 -->
+  <select id="load" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    where
+    id = #{id,jdbcType=VARCHAR} 
+  </select>
+  
+  <!-- 根据条件查询全部 -->
+  <select id="findProject" resultMap="BaseResultMap" >
+    select * from project where 1 = 1
+    <if test='keyword != null and keyword != ""'>
+    </if>
+  </select>
+  
+  <!-- 根据对象主键删除 -->
+  <delete id="delete" >
+    delete from project
+    where
+    id = #{id,jdbcType=VARCHAR} 
+  </delete>
+  
+  <!-- 插入对象全部属性的字段 -->
+  <insert id="insert" parameterType="com.zong.web.bean.Project" >
+    insert into project (<include refid="Base_Column_List" />)
+    values( 
+    	#{id,jdbcType=VARCHAR},
+    	#{name,jdbcType=VARCHAR},
+    	#{remark,jdbcType=VARCHAR},
+    	#{createTime,jdbcType=TIMESTAMP}
+  	)
+  </insert>
+  
+  <!-- 根据主键更新对象不为空属性的字段 -->
+  <update id="update" parameterType="com.zong.web.bean.Project" >
+    update project
+    <set>
+      	<if test="name != null" >
+        	name = #{name,jdbcType=VARCHAR},
+      	</if>
+      	<if test="remark != null" >
+        	remark = #{remark,jdbcType=VARCHAR},
+      	</if>
+      	<if test="createTime != null" >
+        	create_time = #{createTime,jdbcType=TIMESTAMP}
+      	</if>
+    </set>
+    where
+    id = #{id,jdbcType=VARCHAR} 
+  </update>
+</mapper>

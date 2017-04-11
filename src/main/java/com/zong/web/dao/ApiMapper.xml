@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zong.web.dao.ApiMapper" >
+  <resultMap id="BaseResultMap" type="com.zong.web.bean.Api" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="folder_id" property="folderId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="request_body" property="requestBody" jdbcType="VARCHAR" />
+    <result column="curl" property="curl" jdbcType="VARCHAR" />
+    <result column="response" property="response" jdbcType="VARCHAR" />
+    <result column="bean_method" property="beanMethod" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,
+    folder_id,
+    project_id,
+    name,
+    method,
+    url,
+    remark,
+    request_body,
+    curl,
+    response,
+    bean_method,
+    sort
+  </sql>
+  
+  <!-- 根据对象主键查询 -->
+  <select id="load" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from api
+    where
+    id = #{id,jdbcType=VARCHAR} 
+  </select>
+  
+  <!-- 根据条件查询全部 -->
+  <select id="findApi" resultMap="BaseResultMap" >
+    select * from api where 1 = 1
+    <if test='keyword != null and keyword != ""'>
+    </if>
+    <if test='folderId != null and folderId != ""'>
+    and folder_id = #{folderId}
+    </if>
+    <if test='projectId != null and projectId != ""'>
+    and project_id = #{projectId}
+    </if>
+    order by sort
+  </select>
+  
+  <!-- 根据对象主键删除 -->
+  <delete id="delete" >
+    delete from api
+    where
+    id = #{id,jdbcType=VARCHAR} 
+  </delete>
+  
+  <!-- 插入对象全部属性的字段 -->
+  <insert id="insert" parameterType="com.zong.web.bean.Api" >
+    insert into api (<include refid="Base_Column_List" />)
+    values( 
+    	#{id,jdbcType=VARCHAR},
+    	#{folderId,jdbcType=VARCHAR},
+    	#{projectId,jdbcType=VARCHAR},
+    	#{name,jdbcType=VARCHAR},
+    	#{method,jdbcType=VARCHAR},
+    	#{url,jdbcType=VARCHAR},
+    	#{remark,jdbcType=VARCHAR},
+    	#{requestBody,jdbcType=VARCHAR},
+    	#{curl,jdbcType=VARCHAR},
+    	#{response,jdbcType=VARCHAR},
+    	#{beanMethod,jdbcType=VARCHAR},
+    	#{sort,jdbcType=INTEGER}
+  	)
+  </insert>
+  
+  <!-- 根据主键更新对象不为空属性的字段 -->
+  <update id="update" parameterType="com.zong.web.bean.Api" >
+    update api
+    <set>
+      	<if test="folderId != null" >
+        	folder_id = #{folderId,jdbcType=VARCHAR},
+      	</if>
+      	<if test="projectId != null" >
+        	project_id = #{projectId,jdbcType=VARCHAR},
+      	</if>
+      	<if test="name != null" >
+        	name = #{name,jdbcType=VARCHAR},
+      	</if>
+      	<if test="method != null" >
+        	method = #{method,jdbcType=VARCHAR},
+      	</if>
+      	<if test="url != null" >
+        	url = #{url,jdbcType=VARCHAR},
+      	</if>
+      	<if test="remark != null" >
+        	remark = #{remark,jdbcType=VARCHAR},
+      	</if>
+      	<if test="requestBody != null" >
+        	request_body = #{requestBody,jdbcType=VARCHAR},
+      	</if>
+      	<if test="curl != null" >
+        	curl = #{curl,jdbcType=VARCHAR},
+      	</if>
+      	<if test="response != null" >
+        	response = #{response,jdbcType=VARCHAR},
+      	</if>
+      	<if test="beanMethod != null" >
+        	bean_method = #{beanMethod,jdbcType=VARCHAR},
+      	</if>
+      	<if test="sort != null" >
+            sort = #{sort,jdbcType=INTEGER}
+        </if>
+    </set>
+    where
+    id = #{id,jdbcType=VARCHAR} 
+  </update>
+</mapper>

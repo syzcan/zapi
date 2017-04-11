@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zong.web.dao.ParameterMapper" >
+  <resultMap id="BaseResultMap" type="com.zong.web.bean.Parameter" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="api_id" property="apiId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="required" property="required" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,
+    api_id, name, type, required, data_type, remark, sort
+  </sql>
+   
+  <!-- 根据对象主键查询 -->
+  <select id="load" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from parameter
+    where
+    id = #{id,jdbcType=VARCHAR}
+  </select>
+   
+  <!-- 根据条件查询全部 -->
+  <select id="findParameter" resultMap="BaseResultMap" >
+    select * from parameter where 1 = 1
+    <if test='apiId != null and apiId != ""'>
+   	and api_id = #{apiId}
+	</if>
+    <if test='type != null and type != ""'>
+   	and type = #{type}
+	</if>
+	order by sort
+  </select>
+   
+  <!-- 根据对象主键删除 -->
+  <delete id="delete" >
+    delete from parameter
+    where
+    id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByApi" >
+    delete from parameter
+    where
+    api_id = #{id,jdbcType=VARCHAR} 
+  </delete>
+   
+  <!-- 插入对象全部属性的字段 -->
+  <insert id="insert" parameterType="com.zong.web.bean.Parameter" >
+    insert into parameter (<include refid="Base_Column_List" />)
+    values(
+        #{id,jdbcType=VARCHAR},
+        #{apiId,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{type,jdbcType=VARCHAR},
+        #{required,jdbcType=VARCHAR},
+        #{dataType,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        #{sort,jdbcType=INTEGER}
+    )
+  </insert>
+   
+  <!-- 根据主键更新对象不为空属性的字段 -->
+  <update id="update" parameterType="com.zong.web.bean.Parameter" >
+    update parameter
+    <set>
+        <if test="apiId != null" >
+            api_id = #{apiId,jdbcType=VARCHAR},
+        </if>
+        <if test="name != null" >
+            name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="type != null" >
+            type = #{type,jdbcType=VARCHAR},
+        </if>
+        <if test="required != null" >
+            required = #{required,jdbcType=VARCHAR},
+        </if>
+        <if test="dataType != null" >
+            data_type = #{dataType,jdbcType=VARCHAR},
+        </if>
+        <if test="remark != null" >
+            remark = #{remark,jdbcType=VARCHAR},
+        </if>
+        <if test="sort != null" >
+            sort = #{sort,jdbcType=INTEGER}
+        </if>
+    </set>
+    where
+    id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
